@@ -77,7 +77,7 @@ Session variable is prefixed by `session`.
 
 #### Supported Session Variables
 
-* `${session.index}` refers to row number.
+* `${session.index}` refers to row number, equivalent to `${system.rowIndex}`.
 
 ### System Variable
 
@@ -87,6 +87,7 @@ System variable is prefixed by `system`.
 
 * `${system.int:min:max}` refers to a random number between given min and max.
 * `${system.date:layout:min:max}` refers to a random date between given min and max with given layout.
+* `${system.rowIndex:<start_from>}` refers to row number with specified `start_form` number.
 
 ## Exported Data Type
 

@@ -14,7 +14,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-type ResolverFunc func(args string) string
+type ResolverFunc func(args string, sessionVars map[string]string) string
 
 type Generator struct {
 	config   *config
@@ -43,8 +43,9 @@ func New(configFile string) (*Generator, error) {
 		config:   &conf,
 		datasets: map[string][]string{},
 		systems: map[string]ResolverFunc{
-			"system.date": DateResolver,
-			"system.int":  IntResolver,
+			"system.date":     DateResolver,
+			"system.int":      IntResolver,
+			"system.rowIndex": RowIndexResolver,
 		},
 	}
 
@@ -126,7 +127,7 @@ func (g *Generator) containsVariable(val string) bool {
 	return re.Match([]byte(val))
 }
 
-func (g *Generator) tryParseSystemVariable(val string) (ResolverFunc, string, bool) {
+func (g *Generator) tryParseCallable(val string) (ResolverFunc, string, bool) {
 	result := strings.SplitN(val, ":", 2)
 
 	if resolver, ok := g.systems[result[0]]; ok {
@@ -157,9 +158,9 @@ func (g *Generator) renderData(template, returnType string, sessionVars map[stri
 		if variableValue, ok := sessionVars[variable]; ok {
 			result = strings.ReplaceAll(result, replaceableVariableName, variableValue)
 		} else {
-			if systemFunc, systemArgs, ok := g.tryParseSystemVariable(variable); ok {
-				systemResult := systemFunc(systemArgs)
-				result = strings.ReplaceAll(result, replaceableVariableName, systemResult)
+			if callerFunc, callerArgs, ok := g.tryParseCallable(variable); ok {
+				callResult := callerFunc(callerArgs, sessionVars)
+				result = strings.ReplaceAll(result, replaceableVariableName, callResult)
 			} else {
 				if _, ok := g.datasets[variable]; ok {
 					rand.Seed(time.Now().UnixNano())

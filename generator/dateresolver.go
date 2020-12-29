@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func DateResolver(argsList string) string {
+func DateResolver(argsList string, sessionVars map[string]string) string {
 	args := argsSplit(argsList)
 	minTimeArg := "1970-01-01T00:00:00Z"
 	maxTimeArg := "2070-01-01T00:00:00Z"

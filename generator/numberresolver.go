@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-func IntResolver(argsList string) string {
+func IntResolver(argsList string, sessionVars map[string]string) string {
 	args := argsSplit(argsList)
 	minArg := "0"
 	maxArg := "1000000"
