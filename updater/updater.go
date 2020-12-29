@@ -1,10 +1,12 @@
 package updater
 
 import (
+	"archive/zip"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/dustin/go-humanize"
@@ -34,8 +36,7 @@ func (wc WriteCounter) PrintProgress() {
 	fmt.Printf("\rDownloading... %s complete", humanize.Bytes(wc.Total))
 }
 
-func DownloadFile(filepath string, url string) error {
-
+func downloadFile(filepath string, url string) error {
 	// Create the file, but give it a tmp file extension, this means we won't overwrite a
 	// file until it's downloaded, but we'll remove the tmp extension once downloaded.
 	out, err := os.Create(filepath + ".tmp")
@@ -70,6 +71,62 @@ func DownloadFile(filepath string, url string) error {
 	return nil
 }
 
+func unzip(src string, dest string) ([]string, error) {
+
+	var filenames []string
+
+	r, err := zip.OpenReader(src)
+	if err != nil {
+		return filenames, err
+	}
+	defer r.Close()
+
+	for _, f := range r.File {
+
+		// Store filename/path for returning and using later on
+		fpath := filepath.Join(dest, f.Name)
+
+		// Check for ZipSlip. More Info: http://bit.ly/2MsjAWE
+		if !strings.HasPrefix(fpath, filepath.Clean(dest)+string(os.PathSeparator)) {
+			return filenames, fmt.Errorf("%s: illegal file path", fpath)
+		}
+
+		filenames = append(filenames, fpath)
+
+		if f.FileInfo().IsDir() {
+			// Make Folder
+			os.MkdirAll(fpath, os.ModePerm)
+			continue
+		}
+
+		// Make File
+		if err = os.MkdirAll(filepath.Dir(fpath), os.ModePerm); err != nil {
+			return filenames, err
+		}
+
+		outFile, err := os.OpenFile(fpath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
+		if err != nil {
+			return filenames, err
+		}
+
+		rc, err := f.Open()
+		if err != nil {
+			return filenames, err
+		}
+
+		_, err = io.Copy(outFile, rc)
+
+		// Close the file without defer to close before next iteration of loop
+		outFile.Close()
+		rc.Close()
+
+		if err != nil {
+			return filenames, err
+		}
+	}
+	return filenames, nil
+}
+
 func Update() error {
 	datasetsPath := "~/.dataman"
 
@@ -80,16 +137,26 @@ func Update() error {
 
 	datasetsFile := fmt.Sprintf("%s/datasets.zip", path)
 	datasetsURL := "https://raw.githubusercontent.com/chonla/dataman/master/datasets/datasets.zip"
+	targetPath := fmt.Sprintf("%s/datasets", path)
 
 	err = makeDirectoryIfNotExists(path)
 	if err != nil {
 		return err
 	}
 
-	err = DownloadFile(datasetsFile, datasetsURL)
+	fmt.Println("Updating datasets...")
+	err = downloadFile(datasetsFile, datasetsURL)
 	if err != nil {
 		return err
 	}
+
+	fmt.Println("Extracting datasets...")
+	_, err = unzip(datasetsFile, targetPath)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Done.")
 
 	return nil
 }

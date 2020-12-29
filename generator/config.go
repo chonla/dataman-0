@@ -1,7 +1,7 @@
 package generator
 
 type config struct {
-	Datasets string       `yml:"datasets"`
+	Datasets string       `yml:"datasets,omitempty"`
 	Export   exportConfig `yml:"export"`
 }
 

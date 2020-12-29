@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/mitchellh/go-homedir"
 	"gopkg.in/yaml.v2"
 )
 
@@ -49,16 +50,25 @@ func New(configFile string) (*Generator, error) {
 		},
 	}
 
-	err = generator.LoadDatasets(conf.Datasets)
+	internalDatasetsPath, _ := homedir.Expand("~/.dataman/datasets")
+
+	err = generator.LoadDatasets(internalDatasetsPath)
 	if err != nil {
 		return nil, err
+	}
+
+	if conf.Datasets != "" {
+		err = generator.LoadDatasets(conf.Datasets)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	return generator, nil
 }
 
 func (g *Generator) LoadDatasets(path string) error {
-	files, err := filepath.Glob(fmt.Sprintf("%s/*.txt", g.config.Datasets))
+	files, err := filepath.Glob(fmt.Sprintf("%s/*.txt", path))
 	if err != nil {
 		return err
 	}

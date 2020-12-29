@@ -5,7 +5,35 @@ Random data generator.
 ## Usage
 
 ```
-dataman <configuration-file.yml>
+dataman gen <configuration-file.yml>
+```
+
+### Other Usages
+
+#### Update internal datasets
+
+dataman provides internal datasets for data generation. You can use the following command to download/update internal datasets.
+
+```
+dataman update
+```
+
+#### Show internal datasets stats
+
+```
+dataman info
+```
+
+#### Show app version
+
+```
+dataman version
+```
+
+#### Show help page
+
+```
+dataman help
 ```
 
 ## Configuration File (.yml)

@@ -1,0 +1,29 @@
+export:
+    output:
+        count: 10
+        to: console:csv
+    columns:
+        - name: Row number
+          value: ${session.index}
+          type: int
+        - name: Row number with offset 100
+          value: ${system.rowIndex:100}
+          type: int
+        - name: Fix amount
+          value: 1000
+          type: int
+        - name: Fix text
+          value: This is a fixed text.
+          type: string
+        - name: first_name
+          value: ${firstname}
+          type: string
+        - name: full name
+          value: ${firstname} ${lastname}
+          type: string
+        - name: start_date
+          value: ${system.date:"2006-01-02T15:04:05Z07:00":"2020-07-01T00:00:00+07:00":"2021-03-31T23:59:59+07:00"}
+          type: timestamp
+        - name: end_date
+          value: ${system.date:"2006-01-02T15:04:05Z07:00":"2020-08-01T00:00:00+07:00":"2021-04-30T23:59:59+07:00"}
+          type: timestamp
