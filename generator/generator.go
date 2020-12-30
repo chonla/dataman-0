@@ -46,6 +46,7 @@ func New(configFile string) (*Generator, error) {
 		systems: map[string]ResolverFunc{
 			"system.date":     DateResolver,
 			"system.int":      IntResolver,
+			"system.decimal":  DecimalResolver,
 			"system.rowIndex": RowIndexResolver,
 		},
 	}
