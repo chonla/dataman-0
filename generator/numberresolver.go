@@ -20,7 +20,7 @@ func IntResolver(argsList string, sessionVars map[string]string) string {
 
 	minVal, _ := strconv.ParseInt(minArg, 10, 64)
 	maxVal, _ := strconv.ParseInt(maxArg, 10, 64)
-	delta := maxVal - minVal
+	delta := maxVal - minVal + 1
 	r := rand.Int63n(delta)
 
 	randNum := fmt.Sprintf("%d", minVal+r)
