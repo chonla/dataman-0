@@ -167,6 +167,7 @@ func (g *Generator) getVariables(template string) []string {
 func (g *Generator) renderData(template, returnType string, sessionVars map[string]string) interface{} {
 	vars := g.getVariables(template)
 	result := template
+	rand.Seed(time.Now().UnixNano())
 
 	for _, variable := range vars {
 		replaceableVariableName := fmt.Sprintf("${%s}", variable)
@@ -178,7 +179,6 @@ func (g *Generator) renderData(template, returnType string, sessionVars map[stri
 				result = strings.ReplaceAll(result, replaceableVariableName, callResult)
 			} else {
 				if _, ok := g.datasets[variable]; ok {
-					rand.Seed(time.Now().UnixNano())
 					randomIndex := rand.Intn(len(g.datasets[variable]))
 					pick := g.datasets[variable][randomIndex]
 					result = strings.ReplaceAll(result, replaceableVariableName, pick)
