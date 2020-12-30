@@ -23,7 +23,7 @@ func NewWriter(writerType, format string) (*Writer, error) {
 	if writerType == "file" {
 		fileName = format
 		format = filepath.Ext(fileName)
-		baseFileName = fileName[:len(fileName)-len(format)]
+		baseFileName = filepath.Base(fileName[:len(fileName)-len(format)])
 		writer, err = os.Create(fileName)
 		if err != nil {
 			return nil, err
