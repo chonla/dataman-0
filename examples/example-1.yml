@@ -14,7 +14,7 @@ export:
           value: ${session.index}
           type: int
         - name: Row number with offset 100
-          value: ${system.rowIndex:100}
+          value: ${system.seqNumber:100}
           type: int
         - name: Fix amount
           value: 1000

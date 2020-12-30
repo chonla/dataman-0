@@ -105,7 +105,7 @@ Session variable is prefixed by `session`.
 
 #### Supported Session Variables
 
-* `${session.index}` refers to row number, equivalent to `${system.rowIndex}`.
+* `${session.index}` refers to row number, equivalent to `${system.seqNumber}`.
 
 ### System Variable
 
@@ -116,7 +116,7 @@ System variable is prefixed by `system`.
 * `${system.int:min:max}` refers to a random number between given min and max.
 * `${system.decimal:min:max:<precision>}` refers to a random decimal between given min and max with given precision. Default `precision` is 5.
 * `${system.date:layout:min:max}` refers to a random date between given min and max with given layout.
-* `${system.rowIndex:<start_from>}` refers to row number with specified `start_form` number. Default `start_form` is 0.
+* `${system.seqNumber:<start_from>}` refers to row number with specified `start_form` number. Default `start_form` is 0.
 
 ## Exported Data Type
 

@@ -44,10 +44,11 @@ func New(configFile string) (*Generator, error) {
 		config:   &conf,
 		datasets: map[string][]string{},
 		systems: map[string]ResolverFunc{
-			"system.date":     DateResolver,
-			"system.int":      IntResolver,
-			"system.decimal":  DecimalResolver,
-			"system.rowIndex": RowIndexResolver,
+			"system.date":      DateResolver,
+			"system.int":       IntResolver,
+			"system.decimal":   DecimalResolver,
+			"system.seqNumber": SeqNumberResolver,
+			"system.seqDate":   SeqDateResolver,
 		},
 	}
 

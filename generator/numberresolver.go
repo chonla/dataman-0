@@ -6,6 +6,7 @@ import (
 	"strconv"
 )
 
+// IntResolver - int:min:max
 func IntResolver(argsList string, sessionVars map[string]string) string {
 	args := argsSplit(argsList)
 	minArg := "0"
@@ -28,6 +29,7 @@ func IntResolver(argsList string, sessionVars map[string]string) string {
 	return randNum
 }
 
+// DecimalResolver - decimal:min:max:<precision>
 func DecimalResolver(argsList string, sessionVars map[string]string) string {
 	args := argsSplit(argsList)
 	minArg := "0"

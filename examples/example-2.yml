@@ -7,8 +7,14 @@ export:
           value: ${session.index}
           type: int
         - name: Row number with offset 100
-          value: ${system.rowIndex:100}
+          value: ${system.seqNumber:100}
           type: int
+        - name: Date sequence
+          value: ${system.seqDate:"2006-01-02":"2020-07-01T00:00:00+07:00"}
+          type: timestamp
+        - name: Date sequence start from today
+          value: ${system.seqDate:"2006-01-02"}
+          type: timestamp
         - name: Fix amount
           value: 1000
           type: int

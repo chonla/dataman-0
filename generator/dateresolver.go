@@ -6,17 +6,20 @@ import (
 	"time"
 )
 
+// DateResolver - date:layout:from:to
 func DateResolver(argsList string, sessionVars map[string]string) string {
 	args := argsSplit(argsList)
 	minTimeArg := "1970-01-01T00:00:00Z"
 	maxTimeArg := "2070-01-01T00:00:00Z"
+	formatArg := "2006-01-02T15:04:05Z07:00"
 
-	format := trimQuotes(args[0])
-
-	if len(args) > 1 {
-		minTimeArg = args[1]
-		if len(args) > 2 {
-			maxTimeArg = args[2]
+	if len(args) > 0 {
+		formatArg = trimQuotes(args[0])
+		if len(args) > 1 {
+			minTimeArg = args[1]
+			if len(args) > 2 {
+				maxTimeArg = args[2]
+			}
 		}
 	}
 
@@ -33,5 +36,5 @@ func DateResolver(argsList string, sessionVars map[string]string) string {
 	duration, _ := time.ParseDuration(secondsDuration)
 	sec := minTime.Add(duration)
 
-	return sec.Format(format)
+	return sec.Format(formatArg)
 }
