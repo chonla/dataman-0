@@ -123,7 +123,7 @@ func (w *Writer) writeSQL(header []string, data []map[string]interface{}) error 
 				if floatOk {
 					buffer = append(buffer, fmt.Sprintf("%f", floatVal))
 				} else {
-					buffer = append(buffer, fmt.Sprintf("'%s'", row[col].(string)))
+					buffer = append(buffer, fmt.Sprintf("'%s'", w.escapeQuote(row[col].(string))))
 				}
 			}
 		}
@@ -137,4 +137,8 @@ func (w *Writer) writeSQL(header []string, data []map[string]interface{}) error 
 	}
 
 	return nil
+}
+
+func (w *Writer) escapeQuote(s string) string {
+	return strings.ReplaceAll(s, "'", "''")
 }
