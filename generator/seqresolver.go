@@ -7,9 +7,8 @@ import (
 )
 
 // SeqNumberResolver - seqNumber:start_from
-func SeqNumberResolver(argsList string, sessionVars map[string]string) string {
-	args := argsSplit(argsList)
-	var startFrom int64 = 0
+func SeqNumberResolver(args []string, sessionVars map[string]string) string {
+	var startFrom int64 = 1
 
 	if len(args) > 0 {
 		overridingStartFromArg := args[0]
@@ -24,8 +23,7 @@ func SeqNumberResolver(argsList string, sessionVars map[string]string) string {
 }
 
 // SeqDateResolver - seqDate:layout:start_from
-func SeqDateResolver(argsList string, sessionVars map[string]string) string {
-	args := argsSplit(argsList)
+func SeqDateResolver(args []string, sessionVars map[string]string) string {
 	var startFrom = time.Now()
 
 	formatArg := "2006-01-02T15:04:05Z07:00"

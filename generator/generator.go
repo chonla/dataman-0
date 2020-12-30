@@ -15,7 +15,7 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
-type ResolverFunc func(args string, sessionVars map[string]string) string
+type ResolverFunc func(args []string, sessionVars map[string]string) string
 
 type Generator struct {
 	config   *config
@@ -139,13 +139,16 @@ func (g *Generator) containsVariable(val string) bool {
 	return re.Match([]byte(val))
 }
 
-func (g *Generator) tryParseCallable(val string) (ResolverFunc, string, bool) {
+func (g *Generator) tryParseCallable(val string) (ResolverFunc, []string, bool) {
 	result := strings.SplitN(val, ":", 2)
 
 	if resolver, ok := g.systems[result[0]]; ok {
-		return resolver, result[1], true
+		if len(result) > 1 {
+			return resolver, argsSplit(result[1]), true
+		}
+		return resolver, []string{}, true
 	}
-	return nil, "", false
+	return nil, nil, false
 }
 
 func (g *Generator) getVariables(template string) []string {

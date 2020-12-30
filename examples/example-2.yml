@@ -9,6 +9,9 @@ export:
         - name: Row number with offset 100
           value: ${system.seqNumber:100}
           type: int
+        - name: Row number with out start_from
+          value: ${system.seqNumber}
+          type: int
         - name: Date sequence
           value: ${system.seqDate:"2006-01-02":"2020-07-01T00:00:00+07:00"}
           type: timestamp

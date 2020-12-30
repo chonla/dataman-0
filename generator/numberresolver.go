@@ -7,8 +7,7 @@ import (
 )
 
 // IntResolver - int:min:max
-func IntResolver(argsList string, sessionVars map[string]string) string {
-	args := argsSplit(argsList)
+func IntResolver(args []string, sessionVars map[string]string) string {
 	minArg := "0"
 	maxArg := "1000000"
 
@@ -30,8 +29,7 @@ func IntResolver(argsList string, sessionVars map[string]string) string {
 }
 
 // DecimalResolver - decimal:min:max:<precision>
-func DecimalResolver(argsList string, sessionVars map[string]string) string {
-	args := argsSplit(argsList)
+func DecimalResolver(args []string, sessionVars map[string]string) string {
 	minArg := "0"
 	maxArg := "1000000"
 	precisionArg := "5"

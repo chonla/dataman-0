@@ -7,8 +7,7 @@ import (
 )
 
 // DateResolver - date:layout:from:to
-func DateResolver(argsList string, sessionVars map[string]string) string {
-	args := argsSplit(argsList)
+func DateResolver(args []string, sessionVars map[string]string) string {
 	minTimeArg := "1970-01-01T00:00:00Z"
 	maxTimeArg := "2070-01-01T00:00:00Z"
 	formatArg := "2006-01-02T15:04:05Z07:00"
